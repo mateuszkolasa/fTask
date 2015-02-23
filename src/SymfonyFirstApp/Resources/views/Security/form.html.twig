@@ -1,0 +1,40 @@
+{# app/Resources/views/layout.html.twig #}
+{% extends "SymfonyFirstApp::layout.html.twig" %}
+
+{% block title "Logowanie - fTast" %}
+
+{% block content %}
+	<h1>Zaloguj się</h1>
+	
+	{% for flashMessage in app.session.flashbag.get('warning') %}
+	    <div class="alert alert-warning" role="alert">
+	        {{ flashMessage }}
+	    </div>
+	{% endfor %}
+	
+	{% for flashMessage in app.session.flashbag.get('success') %}
+	    <div class="alert alert-success" role="alert">
+	        {{ flashMessage }}
+	    </div>
+	{% endfor %}
+	
+	
+	<form action="{{ path('SymfonyFirstApp_loginCheck') }}" method="post">
+	    <div>
+	    	<label for="username">Login:</label>
+	    	<input type="text" id="username" name="_username" value="">
+	    </div>
+	
+		<div>
+	    	<label for="password">Hasło:</label>
+	    	<input type="password" id="password" name="_password">
+	    </div>
+	
+		<div>
+	    	<input type="hidden" name="_target_path" value="{{ path('SymfonyFirstApp_homepage') }}" />
+	    	<button type="submit" class="btn btn-sm btn-default">Zaloguj</button>
+	    </div>
+	</form>
+	
+	<a href="{{ path('SymfonyFirstApp_register') }}">Nie masz konta?</a>
+{% endblock %}

@@ -1,0 +1,24 @@
+{# app/Resources/views/layout.html.twig #}
+{% extends "SymfonyFirstApp::layout.html.twig" %}
+
+{% block title "Nowe zadanie - fTask" %}
+
+{% block content %}
+	<h1>Nowe zadanie</h1>
+	
+	{% for flashMessage in app.session.flashbag.get('warning') %}
+	    <div class="alert alert-warning" role="alert">
+	        {{ flashMessage }}
+	    </div>
+	{% endfor %}
+	
+	<hr>
+	{{ form_start(form, {'action': path('SymfonyFirstApp_add')}) }}
+		{{ form_row(form.title, {'label': 'Tytuł'}) }}
+		{{ form_row(form.priority, {'label': 'Priorytet'}) }}
+    	{{ form_row(form.date, {'label': 'Data'}) }}
+    	{{ form_row(form.isEnded, {'label': 'Status'}) }}
+    	{{ form_row(form.category, {'label': 'Kategoria'}) }}
+    	{{ form_row(form.save, {'label': 'Dodaj', 'attr': {'class': 'btn btn-sm btn-default'} }) }}
+	{{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,54 @@
+{# app/Resources/views/layout.html.twig #}
+{% extends "SymfonyFirstApp::layout.html.twig" %}
+
+{% block title "fTask" %}
+
+{% block content %}
+	<h1>Lista zadań</h1>
+	<div class="tasks">
+		{% for task in tasks %}
+			{% if task.isEnded %}
+			    <div class="label label-success">
+			{% elseif task.priority == 2 %}
+			    <div class="label label-warning">
+			{% elseif task.priority == 3 %}
+			    <div class="label label-danger">
+			{% else %}
+			    <div class="label label-info">
+			{% endif %}
+				<form action="{{ path('SymfonyFirstApp_delete', {id: task.id}) }}" method="post" class="formOneButton">
+        			<button type="submit" class="btn btn-xs btn-danger">Usuń</button>
+				</form>
+				
+				{%if task.isEnded %}
+					<button type="submit" class="btn btn-xs btn-default">Zrobione</button>
+				{% else %}
+					<form action="{{ path('SymfonyFirstApp_done', {id: task.id}) }}" method="post" class="formOneButton">
+	        			<button type="submit" class="btn btn-xs btn-success">Zrobione</button>
+					</form>
+				{% endif %}
+				<a href="{{ path('SymfonyFirstApp_task', {id: task.id}) }}">{{ task.title }}</a>
+				{% if task.category %}
+					{% if task.category.color == 2 %} <div class="category label label-primary">
+					{% elseif task.category.color == 3 %} <div class="category label label-success">
+					{% elseif task.category.color == 4 %} <div class="category label label-info">
+					{% elseif task.category.color == 5 %} <div class="category label label-warning">
+					{% elseif task.category.color == 6 %} <div class="category label label-danger">
+					{% else %} <div class="category label label-default">
+					{% endif %}
+						<a href="{{ path('SymfonyFirstApp_taskCategories', {id: task.category.id}) }}">{{ task.category.name }}</a>
+					</div>
+				{% endif %}
+			</div>
+		{% endfor %}
+	</div>
+	
+	<h3>Legenda</h3>
+	<p>
+		<span class="label label-success">Zakończone</span>
+		<br>
+	    <span class="label label-info">Niski priorytet</span>
+	    <span class="label label-warning">Normalny priorytet</span>
+		<span class="label label-danger">Wysoki priorytet</span>
+	</p>
+{% endblock %}

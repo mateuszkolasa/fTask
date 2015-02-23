@@ -1,0 +1,49 @@
+{# app/Resources/views/layout.html.twig #}
+{% extends "SymfonyFirstApp::layout.html.twig" %}
+
+{% block title "Kategorie - fTask" %}
+
+{% block content %}
+	<h1>Kategorie</h1>
+	
+	{% for flashMessage in app.session.flashbag.get('success') %}
+	    <div class="alert alert-success" role="alert">
+	        {{ flashMessage }}
+	    </div>
+	{% endfor %}
+	{% for flashMessage in app.session.flashbag.get('danger') %}
+	    <div class="alert alert-warning" role="alert">
+	        {{ flashMessage }}
+	    </div>
+	{% endfor %}
+	
+	<hr>
+	<h2>Nowa kategoria</h2>
+	{{ form_start(form, {'action': path('SymfonyFirstApp_categoriesActionAdd')}) }}
+		{{ form_row(form.name, {'label': 'Nazwa'}) }}
+		{{ form_row(form.color, {'label': 'Kolor'}) }}
+    	{{ form_row(form.save, {'label': 'Dodaj', 'attr': {'class': 'btn btn-sm btn-default'} }) }}
+	{{ form_end(form) }}
+	
+	
+	<h2>Edytuj kategorię</h2>
+	<form action="{{ path('SymfonyFirstApp_categoriesEdit') }}" method="post">
+		<select name="id">
+			{% for category in categories %}
+				<option value="{{ category.id }}">{{ category.name }}</option>
+			{% endfor %}
+		</select>
+		<button type="submit" class="btn btn-sm btn-default">Edytuj</button>
+	</form>
+	
+	
+	<h2>Usuń kategorię</h2>
+	<form action="{{ path('SymfonyFirstApp_categoriesDelete') }}" method="post">
+		<select name="id">
+			{% for category in categories %}
+				<option value="{{ category.id }}">{{ category.name }}</option>
+			{% endfor %}
+		</select>
+		<button type="submit" class="btn btn-sm btn-default">Usuń</button>
+	</form>
+{% endblock %}

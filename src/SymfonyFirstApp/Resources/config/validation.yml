@@ -1,0 +1,17 @@
+SymfonyFirstApp\Entity\Task:
+    properties:
+        title:
+            - NotBlank: ~
+            - Type:
+                type: string
+                message: This value should be of type {{ type }}.
+        date:
+            - NotBlank: ~
+            - Type:
+                type: object
+                message: This value should be of type {{ type }}.
+        isEnded:
+            - Type:
+                type: boolean
+                message: This value should be of type {{ type }}.
+        

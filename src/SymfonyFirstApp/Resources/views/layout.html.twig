@@ -1,0 +1,57 @@
+{# app/Resources/views/layout.html.twig #}
+{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>{% block title %}Test Application{% endblock %}</title>
+        <link href="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/css/example.css" rel="stylesheet" type="text/css" media="all">
+    
+		<link href="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/css/bootstrap.min.css" rel="stylesheet">
+		<link href="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/css/bootstrap-theme.min.css" rel="stylesheet">
+		<script src="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/js/ie-emulation-modes-warning.js"></script>
+	</head>
+    <body>
+    
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">fTask</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+					{% if app.user %}
+			            <li{% if currentPath == path('SymfonyFirstApp_homepage') %} class="active"{% endif %}><a href="{{ path('SymfonyFirstApp_homepage') }}">Lista zadań</a></li>
+		            	<li{% if currentPath == path('SymfonyFirstApp_new') %} class="active"{% endif %}><a href="{{ path('SymfonyFirstApp_new') }}">Nowe zadanie</a></li>
+		            	<li{% if currentPath == path('SymfonyFirstApp_logout') %} class="active"{% endif %}><a href="{{ path('SymfonyFirstApp_categories') }}">Kategorie</a></li>
+		            	<li class="dropdown">
+		              		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ app.user.username }}<span class="caret"></span></a>
+		              		<ul class="dropdown-menu" role="menu">
+				                <!--<li><a href="#">Konto</a></li>-->
+		                		<li><a href="{{ path('SymfonyFirstApp_logout') }}">Wyloguj</a></li>
+		              		</ul>
+		            	</li>
+					{% endif %}
+					</ul>
+				</div><!--/.nav-collapse -->
+  			</div>
+		</nav>
+	    
+		<div class="container theme-showcase" role="main">
+			<div class="jumbotron">
+				{% block content %}
+					<h1>This is default home page!</h1>
+				{% endblock %}
+			</div>
+		</div>
+		
+	    <!-- Bootstrap core JavaScript
+	    ================================================== -->
+	    <!-- Placed at the end of the document so the pages load faster -->
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	    <script src="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/js/bootstrap.min.js"></script>
+	    <script src="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/js/docs.min.js"></script>
+	    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	    <script src="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/js/ie10-viewport-bug-workaround.js"></script>
+    </body>
+</html>

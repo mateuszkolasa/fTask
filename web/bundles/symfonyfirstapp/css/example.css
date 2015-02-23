@@ -1,0 +1,32 @@
+@CHARSET "UTF-8";
+body {
+	background: #ccc;
+}
+
+div.tasks {
+	font-size: 13pt;
+}
+
+div.tasks div {
+	text-align: left;
+	display: block;
+	margin: 10px;
+}
+
+form {
+	display: block;
+}
+
+.formOneButton {
+	display: inline;
+}
+
+input[type=submit] {
+	border: 1px solid #800;
+	background: #f00;
+}
+
+.category {
+	margin-top: -18px !important;
+	float: right;
+}

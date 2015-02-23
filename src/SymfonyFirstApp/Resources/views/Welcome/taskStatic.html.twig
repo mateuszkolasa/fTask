@@ -1,0 +1,30 @@
+{# app/Resources/views/layout.html.twig #}
+{% extends "SymfonyFirstApp::layout.html.twig" %}
+
+{% block title "Nowe zadanie" %}
+
+{% block content %}
+	<h1>{% if page == 'edit' %} Edycja zadania {% else %} Nowe zadanie {% endif %}</h1>
+	{% if page == 'edit' %}
+		<form action="{{ path('SymfonyFirstApp_update', {id: task.id}) }}" method="post">
+	{% else %}
+		<form action="{{ path('SymfonyFirstApp_add') }}" method="post">
+	{% endif %}
+		Tytuł: <input type="test" name="title" value="{% if page == 'edit' %}{{task.title}}{% endif %}"><br>
+		
+		Priorytet: <select name="priority">
+			<option value="1"{% if page == 'edit' and task.priority == 1 %} selected="selected"{% endif %}>Niski</option>
+			<option value="2"{% if page == 'edit' and task.priority == 2 %} selected="selected"{% endif %}>Normalny</option>
+			<option value="3"{% if page == 'edit' and task.priority == 3 %} selected="selected"{% endif %}>Wysoki</option>
+		</select><br>
+		
+		Termin zako�czenia (dd.mm.yyyy): <input type="text" name="date" value="{% if page == 'edit' %}{{ task.date|date('Y-m-d') }}{% endif %}"><br>
+		
+		<select name="isEnded">
+			<option value="0">Otwarte</option>
+			<option value="1"{% if page == 'edit' and task.isEnded == '1' %} selected="selected"{% endif %}>Zamkniete</option>
+		</select><br>
+		
+		<input type="submit" value="Zapisz">
+	</form>
+{% endblock %}

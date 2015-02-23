@@ -1,0 +1,26 @@
+{# app/Resources/views/layout.html.twig #}
+{% extends "SymfonyFirstApp::layout.html.twig" %}
+
+{% block title "Rejestracja - fTast" %}
+
+{% block content %}
+	<h1>Zarejestruj się</h1>
+	
+	{% for flashMessage in app.session.flashbag.get('warning') %}
+	    <div class="alert alert-warning" role="alert">
+	        {{ flashMessage }}
+	    </div>
+	{% endfor %}
+	
+	{{ form_start(form, {'action': path('SymfonyFirstApp_registerAction')}) }}
+		{{ form_row(form.username, {'label': 'Login'}) }}
+		{{ form_row(form.password, {
+			'first_options': {'label': 'Hasło'},
+			'second_options': {'label': 'Hasło'}
+		}) }}
+    	{{ form_row(form.save, {'label': 'Zapisz', 'attr': {'class': 'btn btn-sm btn-default'} }) }}
+	{{ form_end(form) }}
+	
+	
+
+{% endblock %}
