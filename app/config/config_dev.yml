@@ -46,3 +46,9 @@ assetic:
 
 #swiftmailer:
 #    delivery_address: me@example.com
+
+
+services:
+    messager:
+        class:        SymfonyFirstApp\Messager
+        arguments:    [messager_info]

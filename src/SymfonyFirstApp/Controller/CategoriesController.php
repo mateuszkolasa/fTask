@@ -33,16 +33,13 @@ class CategoriesController extends Controller {
     public function newCategoryAction(Request $request) {
     	$category = new Category();
     	
-    	$category->setUserId($this->getUser());
+    	$category->setUser($this->getUser());
     	
     	$form = $this->createForm(new CategoryType(), $category);
     	$form->handleRequest($request);
     	 
     	if ($form->isValid()) {
-    		$request->getSession()->getFlashBag()->add(
-    			'success',
-    			'Utworzono nową kategorię'
-    		);
+    		$this->get('session_message')->setSuccess('Utworzono nową kategorię');
     	
     		$em = $this->getDoctrine()->getManager();
     		$em->persist($category);
@@ -51,10 +48,7 @@ class CategoriesController extends Controller {
     		return $this->redirect($this->generateUrl('SymfonyFirstApp_categories'));
     	}
     	
-    	$request->getSession()->getFlashBag()->add(
-    		'danger',
-    		'Podane dane są nieprawidłowe'
-    	);
+    	$this->get('session_message')->setWarning('Podane dane są nieprawidłowe');
     	
     	return $this->redirect($this->generateUrl('SymfonyFirstApp_categories'));
     }
@@ -86,19 +80,13 @@ class CategoriesController extends Controller {
     	$form->handleRequest($request);
     	
     	if($form->isValid()) {
-    		$request->getSession()->getFlashBag()->add(
-    			'success',
-    			'Zapisano zmiany'
-    		);
+    		$this->get('session_message')->setSuccess('Zapisano zmiany');
     	
     		$this->getDoctrine()->getManager()->flush();
     		return $this->redirect($this->generateUrl('SymfonyFirstApp_categories'));
     	}
     	
-    	$request->getSession()->getFlashBag()->add(
-    		'danger',
-    		'Nie udało się zapisać zmian'
-    	);
+    	$this->get('session_message')->setDanger('Nie udało się zapisać zmian');
     	
     	return $this->redirect($this->generateUrl('SymfonyFirstApp_categoriesEdit'));
     }
@@ -120,17 +108,13 @@ class CategoriesController extends Controller {
     	$em->remove($category);
     	$em->flush();
     	
-    	$request->getSession()->getFlashBag()->add(
-    		'success',
-    		'Kategoria została usunięta'
-    	);
+    	$this->get('session_message')->setSuccess('Kategoria została usunięta');
     	    	
     	return $this->redirect($this->generateUrl('SymfonyFirstApp_categories'));
     }
     
     private function getCategories() {
-    	$user = $this->get('security.context')->getToken()->getUser();
     	$em = $this->getDoctrine()->getEntityManager();
-    	return $em->getRepository('SymfonyFirstApp:Category')->findBy(array('userId' => $user->getId()));
+    	return $em->getRepository('SymfonyFirstApp:Category')->findBy(array('user' => $this->getUser()));
     }
 }

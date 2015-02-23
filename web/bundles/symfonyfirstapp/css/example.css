@@ -30,3 +30,15 @@ input[type=submit] {
 	margin-top: -18px !important;
 	float: right;
 }
+
+table {
+	width: 100%;
+}
+
+th {
+	border-bottom: 1px solid #333;
+}
+
+td {
+	border-bottom: 1px dashed #aaa;
+}

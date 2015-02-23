@@ -1,0 +1,23 @@
+{# app/Resources/views/layout.html.twig #}
+{% extends "SymfonyFirstApp::layout.html.twig" %}
+
+{% block title "fTask - Admin" %}
+
+{% block content %}
+	<h1>Użytkownicy</h1>
+	
+	<table>
+		<tr>
+			<th>Login</th>
+			<th>Zadań ukończonych</th>
+			<th>Wszystkich zadań</th>
+		</tr>
+		{% for user in users %}
+			<tr>
+				<td>{{ user.username }}</td>
+				<td>{{ user.finished }}</td>
+				<td>{{ user.tasks }}</td>
+			</tr>
+		{% endfor %} 
+	</table>
+{% endblock %}

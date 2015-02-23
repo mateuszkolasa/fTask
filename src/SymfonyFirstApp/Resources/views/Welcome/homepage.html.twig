@@ -5,9 +5,16 @@
 
 {% block content %}
 	<h1>Lista zadań</h1>
+	
+	{% for flashMessage in app.session.flashbag.get('success') %}
+	    <div class="alert alert-success" role="alert">
+	        {{ flashMessage }}
+	    </div>
+	{% endfor %}
+	
 	<div class="tasks">
 		{% for task in tasks %}
-			{% if task.isEnded %}
+			{% if task.getStatus == false %}
 			    <div class="label label-success">
 			{% elseif task.priority == 2 %}
 			    <div class="label label-warning">
@@ -20,7 +27,7 @@
         			<button type="submit" class="btn btn-xs btn-danger">Usuń</button>
 				</form>
 				
-				{%if task.isEnded %}
+				{%if task.getStatus == false %}
 					<button type="submit" class="btn btn-xs btn-default">Zrobione</button>
 				{% else %}
 					<form action="{{ path('SymfonyFirstApp_done', {id: task.id}) }}" method="post" class="formOneButton">

@@ -6,7 +6,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="SymfonyFirstApp\Entity\UserRepository")
  * @ORM\Table(name="users")
  * @UniqueEntity("username")
  */
@@ -30,9 +30,19 @@ class User implements UserInterface, \Serializable {
 	protected $password;
 
     /**
-     * @ORM\Column(name="isActive", type="boolean")
+     * @ORM\Column(type="boolean")
      */
-    private $isActive;
+    protected $isActive;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    protected $role;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="user")
+     */
+    protected $tasks;
 
     public function __construct() {
     	$this->isActive = true;
@@ -51,14 +61,24 @@ class User implements UserInterface, \Serializable {
 	}
 
 	public function getRoles() {
-		return array('ROLE_USER'); 
+		return array($this->role);
 	}
 	
 	public function getSalt() { return null; }
 	
-	public function eraseCredentials() {
-		
+	public function getTasks() {
+		return $this->tasks;
 	}
+	
+	public function getFinishedTasks() {
+		return $this->tasks->filter(
+			function($entry) {
+				return $entry->getStatus()?null:$entry;
+			}
+		);
+	}
+	
+	public function eraseCredentials() { }
 	
 	public function serialize() {
 		return serialize(array(

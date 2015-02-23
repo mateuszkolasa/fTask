@@ -26,10 +26,10 @@ class Category {
 	protected $color;
 
 	/**
-	 * @ORM\OneToOne(targetEntity="User", mappedBy="userId")
-     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+	 * @ORM\OneToOne(targetEntity="User", mappedBy="user")
+     * @ORM\JoinColumn(name="user", referencedColumnName="id")
 	 */
-	protected $userId;
+	protected $user;
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Task", mappedBy="category")
@@ -49,8 +49,8 @@ class Category {
 		return $this->color;
 	}
 
-	public function getUserId() {
-		return $this->userId;
+	public function getUser() {
+		return $this->user;
 	}
 	
 	public function getTasks() {
@@ -65,7 +65,7 @@ class Category {
 		$this->color = (int) $newColor;
 	}
 	
-	public function setUserId(User $newUser = null) {
-		$this->userId = $newUser;
+	public function setUser(User $newUser = null) {
+		$this->user = $newUser;
 	}
 }

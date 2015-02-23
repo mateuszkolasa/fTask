@@ -23,3 +23,10 @@ monolog:
             level: debug
         console:
             type:  console
+
+
+
+services:
+    messager:
+        class:        SymfonyFirstApp\Messager
+        arguments:    [messager_info]

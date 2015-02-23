@@ -80,3 +80,9 @@ swiftmailer:
 #                class: SmartyFirstApp:User
 #                property: username
 #                manager_name: customer
+
+
+services:
+    session_message:
+        class:        SymfonyFirstApp\SessionMessage
+        arguments:    ["@session"]

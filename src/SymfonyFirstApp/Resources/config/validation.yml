@@ -10,7 +10,7 @@ SymfonyFirstApp\Entity\Task:
             - Type:
                 type: object
                 message: This value should be of type {{ type }}.
-        isEnded:
+        status:
             - Type:
                 type: boolean
                 message: This value should be of type {{ type }}.

@@ -33,14 +33,14 @@ class Task {
 	/**
 	 * @ORM\Column(type="boolean")
 	 */
-	protected $isEnded;
+	protected $status;
 
 	/**
-	 * ORM\Column(type="integer")
+	 * 
 	 * @ORM\ManyToOne(targetEntity="User", inversedBy="users")
-	 * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="user", referencedColumnName="id")
 	 */
-	protected $userId;
+	protected $user;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="tasks")
@@ -65,16 +65,16 @@ class Task {
 		return $this->date;
 	}
 	
-	public function getIsEnded() {
-		return $this->isEnded;
+	public function getStatus() {
+		return $this->status;
 	}
 	
 	public function getCategory() {
 		return $this->category;
 	}
 	
-	public function getUserId() {
-		return $this->userId;
+	public function getUser() {
+		return $this->user;
 	}
 	
 	public function setTitle($newTitle) {
@@ -89,13 +89,12 @@ class Task {
 		$this->date = $newDate;
 	}
 	
-	public function setUserId(User $newUser = null) {
-		$this->userId = $newUser;
+	public function setUser(User $newUser = null) {
+		$this->user = $newUser;
 	}
 	
-	public function setIsEnded($isEnded) {
-		if($isEnded == "1") $this->isEnded = true;
-		else $this->isEnded = false;
+	public function setStatus($isOpen = true) {
+		$this->status = (bool) $isOpen;
 	}
 	
 	public function setCategory(Category $newCategory = null) {

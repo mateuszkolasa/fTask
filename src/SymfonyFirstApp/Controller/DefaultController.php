@@ -28,7 +28,7 @@ class DefaultController extends Controller {
      */
     public function newAction() {
     	$task = new Task();
-    	$task->setUserId($this->getUser());
+    	$task->setUser($this->getUser());
     	
     	$form = $this->createForm(new TaskType(), $task);
     	
@@ -45,7 +45,7 @@ class DefaultController extends Controller {
      * @Route("/task/{id}", name="SymfonyFirstApp_task")
      */
     public function taskAction(Task $task) {
-    	$task->setUserId($this->getUser());
+    	$task->setUser($this->getUser());
     	$form = $this->createForm(new TaskType(), $task);
     	
     	return $this->render(
@@ -67,16 +67,13 @@ class DefaultController extends Controller {
      */
     public function newTaskAction(Request $request) {
     	$task = new Task();
-    	$task->setUserId($this->getUser());
+    	$task->setUser($this->getUser());
     	
     	$form = $this->createForm(new TaskType(), $task);
     	$form->handleRequest($request);
     	
     	if ($form->isValid()) {
-    		$request->getSession()->getFlashBag()->add(
-				'success',
-				'Utworzono nowe zadanie'
-    		);
+    		$this->get('session_message')->setSuccess('Utworzono nowe zadanie');
     		
     		$em = $this->getDoctrine()->getManager();
     		$em->persist($task);
@@ -85,10 +82,7 @@ class DefaultController extends Controller {
     		return $this->redirect($this->generateUrl('SymfonyFirstApp_task', array('id' => $task->getId())));
     	}
     	
-    	$request->getSession()->getFlashBag()->add(
-    			'warning',
-    			'Podane dane są nieprawidłowe'
-    	);
+    	$this->get('session_message')->setWarning('Podane dane sa nieprawidłowe');
     	return $this->redirect($this->generateUrl('SymfonyFirstApp_new'));
     }
     
@@ -97,17 +91,14 @@ class DefaultController extends Controller {
      * @Method({"POST"})
      */
     public function updateTaskAction(Task $task, Request $request) {
-    	$task->setUserId($this->getUser());
+    	$task->setUser($this->getUser());
     	$form = $this->createForm(new TaskType(), $task);
     	$requestPost = $request->request->all();
     	$form->handleRequest($request);
     	
     	$this->getDoctrine()->getManager()->flush();
     	
-    	$request->getSession()->getFlashBag()->add(
-    			'success',
-    			'Zadanie zostało zedytowane'
-    	);
+    	$this->get('session_message')->setSuccess('Zadanie zostało zedytowane');
     	
     	return $this->redirect($this->generateUrl('SymfonyFirstApp_task', array('id' => $task->getId())));
     }
@@ -121,10 +112,7 @@ class DefaultController extends Controller {
     	$em->remove($task);
     	$em->flush();
     	
-    	$request->getSession()->getFlashBag()->add(
-    			'success',
-    			'Zadanie zostało usunięte'
-    	);
+    	$this->get('session_message')->setSuccess('Zadanie zostało usunięte');
     	
     	return $this->redirect($this->generateUrl('SymfonyFirstApp_homepage'));
     }
@@ -135,17 +123,16 @@ class DefaultController extends Controller {
      */
     public function setDoneTaskAction(Task $task) {
     	$em = $this->getDoctrine()->getManager();
-    	$task->setIsEnded("1");
+    	$task->setStatus(false);
     	$em->flush();
+
+    	$this->get('session_message')->setSuccess('Zadanie zostało oznaczone jako zrobione');
     	
     	return $this->redirect($this->generateUrl('SymfonyFirstApp_homepage'));
     }
     
     private function getTasksList() {
-    	$user = $this->get('security.context')->getToken()->getUser();
     	$em = $this->getDoctrine()->getEntityManager();
-    	return $em->getRepository('SymfonyFirstApp:Task')->findBy(array('userId' => $user->getId()));
-    	
-    	//return $this->getDoctrine()->getRepository('SymfonyFirstApp:Task')->findAll();
+    	return $em->getRepository('SymfonyFirstApp:Task')->findBy(array('user' => $this->getUser()));
     }
 }

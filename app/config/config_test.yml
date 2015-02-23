@@ -14,3 +14,10 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+
+
+services:
+    messager:
+        class:        SymfonyFirstApp\Messager
+        arguments:    [messager_info]

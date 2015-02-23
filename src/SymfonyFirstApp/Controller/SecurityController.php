@@ -24,10 +24,7 @@ class SecurityController extends Controller {
     	$error = $authenticationUtils->getLastAuthenticationError();
     	
     	if($error !== null) {
-    		$request->getSession()->getFlashBag()->add(
-    			'warning',
-    			'Podane dane sa nieprawidłowe'
-    		);
+    		$this->get('session_message')->setWarning('Podane hasła różnią się od siebie');
     	}
     	
     	$lastUsername = $authenticationUtils->getLastUsername();
@@ -57,10 +54,7 @@ class SecurityController extends Controller {
     	$form->handleRequest($request);
     	    	
     	if($form->isValid()) {
-    		$request->getSession()->getFlashBag()->add(
-	    		'success',
-	    		'Możesz się zalogować'
-	    	);
+    		$this->get('session_message')->setSuccess('Możesz się zalogować');
     		
     		$encoder = $this->get('security.password_encoder');
     		$user->setPassword($encoder->encodePassword($user, $user->getPassword()));
@@ -72,10 +66,7 @@ class SecurityController extends Controller {
 	    	return $this->render('SymfonyFirstApp:Security:form.html.twig');
     	}
     	
-    	$request->getSession()->getFlashBag()->add(
-    		'warning',
-    		'Podane hasła różnią się od siebie'
-    	);
+    	$this->get('session_message')->setWarning('Podane hasła różnią się od siebie');
     	return $this->render('SymfonyFirstApp:Security:register.html.twig', array('form' => $form->createView()));
      }
     
@@ -84,10 +75,7 @@ class SecurityController extends Controller {
      */
     public function logoutAction() {
     	$this->get('request')->getSession()->invalidate();
-    	$this->get('request')->getSession()->getFlashBag()->add(
-    		'success',
-    		'Zostałes pomyślnie wylogowany'
-    	);
+    	$this->get('session_message')->setSuccess('Zostałeś pomyślnie wylogowany.');
     	return $this->redirect($this->generateUrl('SymfonyFirstApp_login'));
     }
 }

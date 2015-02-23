@@ -17,8 +17,8 @@ class TaskType extends AbstractType {
 	    		'required'  => true)
 	    	)
 	    	->add('date', 'date')
-	    	->add('isEnded', 'choice', array(
-	    		'choices'   => array('0' => 'Otwarte', '1' => 'Zamkniete'),
+	    	->add('status', 'choice', array(
+	    		'choices'   => array('1' => 'Otwarte', '0' => 'Zamkniete'),
 	    		'required'  => true)
 	    	)
 	    	->add('category', 'entity', array(
@@ -28,7 +28,7 @@ class TaskType extends AbstractType {
 				'required' => false,
     			'query_builder' => function(EntityRepository $er) use ($task) {
     				return $er->createQueryBuilder('categories')
-    				->where('categories.userId = '.$task->getUserId()->getId());
+    				->where('categories.user = '.$task->getUser()->getId());
     			}
 	    	))
 	    	->add('save', 'submit');
