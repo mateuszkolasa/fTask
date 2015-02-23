@@ -38,6 +38,11 @@ class User implements UserInterface, \Serializable {
      * @ORM\Column(type="string", length=20)
      */
     protected $role;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    protected $email;
     
     /**
      * @ORM\OneToMany(targetEntity="Task", mappedBy="user")
@@ -46,6 +51,7 @@ class User implements UserInterface, \Serializable {
 
     public function __construct() {
     	$this->isActive = true;
+    	$this->role = 'ROLE_USER';
     }
     
 	public function getId() {
@@ -62,6 +68,10 @@ class User implements UserInterface, \Serializable {
 
 	public function getRoles() {
 		return array($this->role);
+	}
+	
+	public function getEmail() {
+		return $this->email;
 	}
 	
 	public function getSalt() { return null; }
@@ -106,5 +116,9 @@ class User implements UserInterface, \Serializable {
 	
 	public function setPassword($newPassword) {
 		$this->password = $newPassword;
+	}
+	
+	public function setEmail($newEmail) {
+		$this->email = $newEmail;
 	}
 }
