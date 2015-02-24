@@ -1,0 +1,17 @@
+<h1>Witaj {{ user }}!</h1>
+{% if tasks %}
+	Oto Twoja lista zadań:
+	{% for task in tasks %}
+		{% if task.priority == 2 %}
+		    <div style="background: #8f8; margin: 10px 0; padding: 5px;">
+		{% elseif task.priority == 3 %}
+		    <div style="background: #f88; margin: 10px 0; padding: 5px;">
+		{% else %}
+		    <div style="background: #88f; margin: 10px 0; padding: 5px;">
+		{% endif %}
+			{{ task.title }}
+		</div>
+	{% endfor %}
+{% else %}
+	Nie masz żadnych nowych zadań.
+{% endif %}

@@ -46,6 +46,7 @@ class User implements UserInterface, \Serializable {
     
     /**
      * @ORM\OneToMany(targetEntity="Task", mappedBy="user")
+     * @ORM\OrderBy({"priority" = "desc"})
      */
     protected $tasks;
 
@@ -84,6 +85,14 @@ class User implements UserInterface, \Serializable {
 		return $this->tasks->filter(
 			function($entry) {
 				return $entry->getStatus()?null:$entry;
+			}
+		);
+	}
+	
+	public function getActiveTasks() {
+		return $this->tasks->filter(
+			function($entry) {
+				return $entry->getStatus()?$entry:null;
 			}
 		);
 	}

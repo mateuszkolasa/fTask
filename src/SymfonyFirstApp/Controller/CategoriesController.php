@@ -114,7 +114,7 @@ class CategoriesController extends Controller {
     }
     
     private function getCategories() {
-    	$em = $this->getDoctrine()->getEntityManager();
+    	$em = $this->getDoctrine()->getManager();
     	return $em->getRepository('SymfonyFirstApp:Category')->findBy(array('user' => $this->getUser()));
     }
 }
