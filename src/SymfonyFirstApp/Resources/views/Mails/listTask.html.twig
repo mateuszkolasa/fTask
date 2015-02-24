@@ -3,11 +3,11 @@
 	Oto Twoja lista zadań:
 	{% for task in tasks %}
 		{% if task.priority == 2 %}
-		    <div style="background: #8f8; margin: 10px 0; padding: 5px;">
+		    <div style="background: #ff8; margin: 10px 0; padding: 5px;">
 		{% elseif task.priority == 3 %}
 		    <div style="background: #f88; margin: 10px 0; padding: 5px;">
 		{% else %}
-		    <div style="background: #88f; margin: 10px 0; padding: 5px;">
+		    <div style="background: #8ff; margin: 10px 0; padding: 5px;">
 		{% endif %}
 			{{ task.title }}
 		</div>

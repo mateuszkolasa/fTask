@@ -10,7 +10,6 @@ use SymfonyFirstApp\Entity\Task;
 use SymfonyFirstApp\Form\TaskType;
 use SymfonyFirstApp\Entity\Category;
 use SymfonyFirstApp\Form\CategoryTypeType;
-
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 
 class DefaultController extends Controller {
@@ -133,6 +132,10 @@ class DefaultController extends Controller {
     
     private function getTasksList() {
     	$em = $this->getDoctrine()->getManager();
+    	
+    	$filters = $em->getFilters();
+		$filters->enable('translatable');
+    	
     	return $em->getRepository('SymfonyFirstApp:Task')->findBy(array('user' => $this->getUser()));
     }
 }
