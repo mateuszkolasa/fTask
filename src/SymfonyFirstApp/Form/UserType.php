@@ -13,6 +13,7 @@ class UserType extends AbstractType {
 	    		'type' => 'password',
     			'required' => true
 	    	))
+	    	->add('email', 'text')
 	    	->add('save', 'submit');
 	}
 	

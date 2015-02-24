@@ -16,8 +16,9 @@
 		{{ form_row(form.username, {'label': 'Login'}) }}
 		{{ form_row(form.password, {
 			'first_options': {'label': 'Hasło'},
-			'second_options': {'label': 'Hasło'}
+			'second_options': {'label': 'Powtórz hasło'}
 		}) }}
+		{{ form_row(form.email, {'label': 'Adres email'}) }}
     	{{ form_row(form.save, {'label': 'Zapisz', 'attr': {'class': 'btn btn-sm btn-default'} }) }}
 	{{ form_end(form) }}
 	

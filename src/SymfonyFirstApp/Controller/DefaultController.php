@@ -132,7 +132,7 @@ class DefaultController extends Controller {
     }
     
     private function getTasksList() {
-    	$em = $this->getDoctrine()->getEntityManager();
+    	$em = $this->getDoctrine()->getManager();
     	return $em->getRepository('SymfonyFirstApp:Task')->findBy(array('user' => $this->getUser()));
     }
 }

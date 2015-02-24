@@ -15,9 +15,9 @@
 	<div class="tasks">
 		{% for task in tasks %}
 			{% if task.getStatus == false %}
-			    <div class="label label-success">
+			    <div class="label label-default">
 			{% elseif task.priority == 2 %}
-			    <div class="label label-warning">
+			    <div class="label label-success">
 			{% elseif task.priority == 3 %}
 			    <div class="label label-danger">
 			{% else %}
@@ -52,10 +52,10 @@
 	
 	<h3>Legenda</h3>
 	<p>
-		<span class="label label-success">Zakończone</span>
+		<span class="label label-default">Zakończone</span>
 		<br>
 	    <span class="label label-info">Niski priorytet</span>
-	    <span class="label label-warning">Normalny priorytet</span>
+	    <span class="label label-success">Normalny priorytet</span>
 		<span class="label label-danger">Wysoki priorytet</span>
 	</p>
 {% endblock %}

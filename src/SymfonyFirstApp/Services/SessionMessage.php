@@ -1,5 +1,5 @@
 <?php
-namespace SymfonyFirstApp;
+namespace SymfonyFirstApp\Services;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 
