@@ -54,8 +54,8 @@
 	<p>
 		<span class="label label-success">Zakończone</span>
 		<br>
-	    <span class="label label-info">Niski priorytet</span>
-	    <span class="label label-warning">Normalny priorytet</span>
-		<span class="label label-danger">Wysoki priorytet</span>
+	    <span class="label label-info"><a href="{{ path('SymfonyFirstApp_list', {type: 'low'}) }}">Niski priorytet</a></span>
+	    <span class="label label-warning"><a href="{{ path('SymfonyFirstApp_list', {type: 'normal'}) }}">Normalny priorytet</a></span>
+		<span class="label label-danger"><a href="{{ path('SymfonyFirstApp_list', {type: 'high'}) }}">Wysoki priorytet</a></span>
 	</p>
 {% endblock %}

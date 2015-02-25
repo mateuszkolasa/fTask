@@ -23,6 +23,15 @@ class DefaultController extends Controller {
     }
     
     /**
+     * @Route("/list/{type}", name="SymfonyFirstApp_list")
+     */
+    public function listAction($type) {
+    	return $this->render('SymfonyFirstApp:Welcome:homepage.html.twig', array(
+    			'tasks' => $this->getTasksList($type)
+    	));
+    }
+    
+    /**
      * @Route("/new", name="SymfonyFirstApp_new")
      */
     public function newAction() {
@@ -130,16 +139,13 @@ class DefaultController extends Controller {
     	return $this->redirect($this->generateUrl('SymfonyFirstApp_homepage'));
     }
     
-    private function getTasksList() {
+    private function getTasksList($type = null) {
     	$em = $this->getDoctrine()->getManager();
-    	
-		
-    	/*$repo = $em->getRepository('Gedmo\Loggable\Entity\LogEntry');
-    	$person_repo = $em->getRepository('SymfonyFirstApp\Entity\Person');
-    	
-    	$person = $person_repo->find(1);
-    	$log = $repo->findBy(array('objectId' => $person->getId()));
-    	foreach ($log as $log_entry) { var_dump($log_entry->getData()); }*/
+
+    	if($type !== null) {
+    		$priority = array('low' => 1, 'normal' => 2, 'high' => 3);
+    		return $em->getRepository('SymfonyFirstApp:Task')->findBy(array('user' => $this->getUser(), 'priority' => $priority[$type]));
+    	}
     	
     	return $em->getRepository('SymfonyFirstApp:Task')->findBy(array('user' => $this->getUser()));
     }
