@@ -21,8 +21,6 @@ class AdminController extends Controller {
      */
     public function indexAction() {
     	$sm = $this->get('session_message');
-    	$sm->test();
-    	
     	
     	return $this->render('SymfonyFirstApp:Admin:index.html.twig',
     		array('users' => $this->getUsersList())
