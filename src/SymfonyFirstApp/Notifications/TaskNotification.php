@@ -1,7 +1,8 @@
 <?php
-namespace SymfonyFirstApp\Entity;
+namespace SymfonyFirstApp\Notifications;
 
 use SymfonyFirstApp\Interfaces\NotifyInterface;
+use SymfonyFirstApp\Entity\Task;
 
 class TaskNotification implements NotifyInterface {
 	

@@ -2,7 +2,6 @@
 namespace SymfonyFirstApp\Entity;
 
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-//use Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 use Doctrine\ORM\Mapping as ORM;

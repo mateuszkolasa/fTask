@@ -6,10 +6,10 @@ use SymfonyFirstApp\Entity\Task;
 use SymfonyFirstApp\Services\TemplatedMailSender;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use SymfonyFirstApp\Entity\TaskNotification;
+use SymfonyFirstApp\Notifications\TaskNotification;
 
 class AdminMailer {
-	
+
 	protected $container;
 	protected $notificationSender;
 	
