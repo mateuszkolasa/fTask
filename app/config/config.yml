@@ -78,12 +78,12 @@ doctrine:
                 class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
                 enabled: true
         mappings:
-            translatable:
+            gedmo_loggable:
                 type: annotation
-                alias: Gedmo
-                prefix: Gedmo\Translatable\Entity
-                # make sure vendor library location is correct
-                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+                prefix: Gedmo\Loggable\Entity
+                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+                alias: GedmoLoggable # this one is optional and will default to the name set for the mapping
+                is_bundle: false
 
 
 

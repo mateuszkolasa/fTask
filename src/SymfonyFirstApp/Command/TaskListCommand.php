@@ -16,7 +16,7 @@ class TaskListCommand extends ContainerAwareCommand {
 	
 	protected function configure() {
 		$this->setName('sfa:tasklist')
-		->setDescription('To to nie wiem co jest');
+		->setDescription('Send list opened task to all users');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {

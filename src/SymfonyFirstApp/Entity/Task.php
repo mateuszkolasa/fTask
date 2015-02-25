@@ -1,6 +1,9 @@
 <?php
 namespace SymfonyFirstApp\Entity;
 
+use Doctrine\Common\NotifyPropertyChanged;
+use Doctrine\Common\PropertyChangedListener;
+
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -8,10 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="tasks")
  * 
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Gedmo\Loggable
+ * 
+ * @ORM\Table(name="tasks")
  */
 class Task {
 	/**

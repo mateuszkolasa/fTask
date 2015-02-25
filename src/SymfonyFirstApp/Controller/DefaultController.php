@@ -133,11 +133,13 @@ class DefaultController extends Controller {
     private function getTasksList() {
     	$em = $this->getDoctrine()->getManager();
     	
-    	$filters = $em->getFilters();
-    	//print_r(get_class_vars($filters));
-    	//exit();
-    	//var_dump($filters);
-		//$filters->enable('timestampable');
+		
+    	/*$repo = $em->getRepository('Gedmo\Loggable\Entity\LogEntry');
+    	$person_repo = $em->getRepository('SymfonyFirstApp\Entity\Person');
+    	
+    	$person = $person_repo->find(1);
+    	$log = $repo->findBy(array('objectId' => $person->getId()));
+    	foreach ($log as $log_entry) { var_dump($log_entry->getData()); }*/
     	
     	return $em->getRepository('SymfonyFirstApp:Task')->findBy(array('user' => $this->getUser()));
     }
