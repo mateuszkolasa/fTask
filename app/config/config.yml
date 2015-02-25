@@ -74,12 +74,19 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%" 
         auto_mapping: true
         
-        filters:
-            softdeleteable:
-                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
-                enabled: true
+        #entity_managers:
+        #    default:
+        #        auto_mapping: true
+        #        filters:
+        #            softdeleteable:
+        #                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+        #                enabled: true
+        
+        
         
         mappings:
+            #StofDoctrineExtensionsBundle: ~
+        
             translatable:
                 type: annotation
                 alias: Gedmo

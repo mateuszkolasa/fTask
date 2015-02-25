@@ -18,10 +18,6 @@ class SecurityController extends Controller {
      * @Route("/login", name="SymfonyFirstApp_login")
      */
     public function loginAction(Request $request) {
-    	
-    	$filters = $this->getDoctrine()->getManager()->getFilters();
-    	$filters->disable('softdeleteable');
-    	
     	$form = $this->createForm(new UserType(), new User());
     	
     	$authenticationUtils = $this->get('security.authentication_utils');
