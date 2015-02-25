@@ -134,7 +134,10 @@ class DefaultController extends Controller {
     	$em = $this->getDoctrine()->getManager();
     	
     	$filters = $em->getFilters();
-		$filters->enable('translatable');
+    	//print_r(get_class_vars($filters));
+    	//exit();
+    	//var_dump($filters);
+		//$filters->enable('timestampable');
     	
     	return $em->getRepository('SymfonyFirstApp:Task')->findBy(array('user' => $this->getUser()));
     }

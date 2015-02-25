@@ -1,11 +1,17 @@
 <?php
 namespace SymfonyFirstApp\Entity;
 
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+//use Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter;
+use Gedmo\Mapping\Annotation as Gedmo;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="tasks")
+ * 
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Task {
 	/**
@@ -34,7 +40,20 @@ class Task {
 	 * @ORM\Column(type="boolean")
 	 */
 	protected $status;
-
+	
+	/**
+	 * @var datetime $updated
+     *
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
+	 */
+	private $updated;
+	
+	/**
+	 * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
+	 */
+	private $deletedAt;
+	
 	/**
 	 * 
 	 * @ORM\ManyToOne(targetEntity="User", inversedBy="users")
@@ -69,6 +88,10 @@ class Task {
 		return $this->status;
 	}
 	
+	public function getUpdated() {
+		return $this->updated;
+	}
+	
 	public function getCategory() {
 		return $this->category;
 	}
@@ -96,6 +119,10 @@ class Task {
 	public function setStatus($isOpen = true) {
 		$this->status = (bool) $isOpen;
 	}
+	
+	/*public function setUpdated($newDateTime) {
+		$this->updated = $newDateTime;
+	}*/
 	
 	public function setCategory(Category $newCategory = null) {
 		$this->category = $newCategory;

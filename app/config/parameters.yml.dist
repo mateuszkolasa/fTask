@@ -16,7 +16,7 @@ parameters:
     mailer_port: 465
     mailer_encryption: ssl
     
-    mail_admin: jack.kowalsky@domain.com
+    admin_mail: jack.kowalsky@domain.com
 
     locale:            en
 

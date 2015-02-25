@@ -24,7 +24,7 @@ class SecurityController extends Controller {
     	$error = $authenticationUtils->getLastAuthenticationError();
     	
     	if($error !== null) {
-    		$this->get('session_message')->setWarning('Podane hasła różnią się od siebie');
+    		$this->get('session_message')->setWarning('Podane dane są nieprawidłowe');
     	}
     	
     	$lastUsername = $authenticationUtils->getLastUsername();
