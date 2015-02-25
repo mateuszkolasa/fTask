@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tasks")
  * 
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Gedmo\Loggable
  */
 class Task {
 	/**
@@ -21,6 +22,7 @@ class Task {
 	protected $id;
 
 	/**
+	 * @Gedmo\Versioned
 	 * @ORM\Column(type="string", length=100)
 	 */
 	protected $title;
