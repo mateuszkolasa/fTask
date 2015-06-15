@@ -11,15 +11,31 @@ use SymfonyFirstApp\Form\TaskType;
 use SymfonyFirstApp\Entity\Category;
 use SymfonyFirstApp\Form\CategoryTypeType;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DefaultController extends Controller {
     /**
      * @Route("/", name="SymfonyFirstApp_homepage")
      */
     public function indexAction() {
+    	return $this->render('SymfonyFirstApp:Welcome:grid.html.twig');
+    }
+    
+    /**
+     * @Route("/tasks", name="SymfonyFirstApp_tasks")
+     */
+    public function tasksAction() {
     	return $this->render('SymfonyFirstApp:Welcome:homepage.html.twig', array(
-    			'tasks' => $this->getTasksList()
+    	    'tasks' => $this->getTasksList('nojs')
     	));
+    }
+    
+
+    /**
+     * @Route("/api/tasks", name="SymfonyFirstApp_api_tasks")
+     */
+    public function apiTasksAction() {
+        return new JsonResponse($this->getTasksList());
     }
     
     /**
@@ -126,27 +142,31 @@ class DefaultController extends Controller {
     }
 
     /**
-     * @Route("/action_done/{id}", name="SymfonyFirstApp_done")
-     * @Method({"POST"})
+     * @Route("/action_status/{id}", name="SymfonyFirstApp_status")
+     *
      */
-    public function setDoneTaskAction(Task $task) {
+    public function changeStatusAction(Task $task) {
     	$em = $this->getDoctrine()->getManager();
-    	$task->setStatus(false);
+    	$task->changeStatus();
     	$em->flush();
 
-    	$this->get('session_message')->setSuccess('Zadanie zostało oznaczone jako zrobione');
+    	//$this->get('session_message')->setSuccess('Zadanie zostało oznaczone jako zrobione');
     	
-    	return $this->redirect($this->generateUrl('SymfonyFirstApp_homepage'));
+    	return new JsonResponse(array('status' => $task->getStatus(), 'priority' => $task->getPriorityName()));
     }
     
     private function getTasksList($type = null) {
     	$em = $this->getDoctrine()->getManager();
-
+    	
+    	if($type == 'nojs') {
+    	    return $em->getRepository('SymfonyFirstApp:Task')->findBy(array('user' => $this->getUser()));
+    	}
+    	
     	if($type !== null) {
     		$priority = array('low' => 1, 'normal' => 2, 'high' => 3);
     		return $em->getRepository('SymfonyFirstApp:Task')->findBy(array('user' => $this->getUser(), 'priority' => $priority[$type]));
     	}
     	
-    	return $em->getRepository('SymfonyFirstApp:Task')->findBy(array('user' => $this->getUser()));
+    	return $em->getRepository('SymfonyFirstApp:Task')->findArrayBy(array('user' => $this->getUser()));
     }
 }

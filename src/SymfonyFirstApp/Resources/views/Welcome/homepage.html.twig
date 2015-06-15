@@ -30,7 +30,7 @@
 				{%if task.getStatus == false %}
 					<button type="submit" class="btn btn-xs btn-default">Zrobione</button>
 				{% else %}
-					<form action="{{ path('SymfonyFirstApp_done', {id: task.id}) }}" method="post" class="formOneButton">
+					<form action="{{ path('SymfonyFirstApp_done', {id: 0}) }}" method="post" class="formOneButton">
 	        			<button type="submit" class="btn btn-xs btn-success">Zrobione</button>
 					</form>
 				{% endif %}

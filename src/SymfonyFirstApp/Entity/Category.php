@@ -68,4 +68,12 @@ class Category {
 	public function setUser(User $newUser = null) {
 		$this->user = $newUser;
 	}
+	
+	public function toArray() {
+	    return array(
+	        'id' => $this->id,
+	        'name' => $this->name,
+	        'color' => $this->color
+	    );
+	}
 }

@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @Gedmo\Loggable
  * 
  * @ORM\Table(name="tasks")
+ * @ORM\Entity(repositoryClass="SymfonyFirstApp\Entity\TaskRepository")
  */
 class Task {
 	/**
@@ -85,6 +86,15 @@ class Task {
 		return $this->priority;
 	}
 	
+	public function getPriorityName() {
+		if($this->status == false) return 'success';
+		
+		if($this->priority == 2) return 'warning';
+		if($this->priority == 3) return 'danger';
+		
+		return 'info';
+	}
+	
 	public function getDate() {
 		return $this->date;
 	}
@@ -99,6 +109,16 @@ class Task {
 	
 	public function getCategory() {
 		return $this->category;
+	}
+	
+	public function getCategoryClass() {
+		if($this->category->getColor() == 2) return 'primary';
+		if($this->category->getColor() == 3) return 'success';
+		if($this->category->getColor() == 4) return 'info';
+		if($this->category->getColor() == 5) return 'warning';
+		if($this->category->getColor() == 6) return 'danger';
+		
+		return 'default';
 	}
 	
 	public function getUser() {
@@ -125,11 +145,31 @@ class Task {
 		$this->status = (bool) $isOpen;
 	}
 	
+	public function changeStatus() {
+	    $this->status = !$this->status;
+	}
+	
 	/*public function setUpdated($newDateTime) {
 		$this->updated = $newDateTime;
 	}*/
 	
 	public function setCategory(Category $newCategory = null) {
 		$this->category = $newCategory;
+	}
+	
+	public function toArray() {
+	    $category = null;
+	    if($this->category != null) {
+	        $category = $this->category->toArray();
+	        $category['className'] = $this->getCategoryClass();
+	    }
+	    
+	    return array(
+	        'id' => $this->id,
+	        'category' => $category,
+	        'title' => $this->title,
+	        'status' => $this->status,
+	        'priority' => $this->getPriorityName()
+	    );
 	}
 }

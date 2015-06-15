@@ -7,10 +7,19 @@ div.tasks {
 	font-size: 13pt;
 }
 
-div.tasks div {
+div.tasks .task {
+	width: 100%;
 	text-align: left;
 	display: block;
 	margin: 10px;
+	padding: 10px;
+}
+
+div.tasks .task .category {
+	text-align: left;
+	display: block;
+	margin-top: -20px;
+	float: right;
 }
 
 form {
@@ -24,11 +33,6 @@ form {
 input[type=submit] {
 	border: 1px solid #800;
 	background: #f00;
-}
-
-.category {
-	margin-top: -18px !important;
-	float: right;
 }
 
 table {

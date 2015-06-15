@@ -1,7 +1,7 @@
 {# app/Resources/views/layout.html.twig #}
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 <!DOCTYPE html>
-<html>
+<html ng-app="fTask">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>{% block title %}Test Application{% endblock %}</title>
@@ -9,14 +9,14 @@
     
 		<link href="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/css/bootstrap.min.css" rel="stylesheet">
 		<link href="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/css/bootstrap-theme.min.css" rel="stylesheet">
-		<script src="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/js/ie-emulation-modes-warning.js"></script>
+	    <!--<script src="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/js/ie-emulation-modes-warning.js"></script>-->
 	</head>
     <body>
     
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="#">fTask</a>
+					<a class="navbar-brand" href="#"><span class="glyphicon glyphicon-list-alt"></span> fTask</a>
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
@@ -50,8 +50,8 @@
 	    <!-- Placed at the end of the document so the pages load faster -->
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	    <script src="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/js/bootstrap.min.js"></script>
-	    <script src="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/js/docs.min.js"></script>
+	    <!--<script src="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/js/docs.min.js"></script>-->
 	    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-	    <script src="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/js/ie10-viewport-bug-workaround.js"></script>
+	    <!--<script src="{{ path('SymfonyFirstApp_homepage') }}bundles/symfonyfirstapp/js/ie10-viewport-bug-workaround.js"></script>-->
     </body>
 </html>
