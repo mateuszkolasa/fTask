@@ -1,8 +1,11 @@
 {# app/Resources/views/layout.html.twig #}
 {% extends "SymfonyFirstApp::layout.html.twig" %}
 
+{% block title %}fTask{% endblock %}
+
 {% block content %}
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
 (function(){
     var fTask = angular.module('fTask', []).config(['$interpolateProvider', function ($interpolateProvider) {
@@ -11,7 +14,13 @@
     }]);
 
     fTask.factory('$task', ['$http', function($http) {
-		var task = this;
+		var taskService = this;  
+		this.temp;  
+		this.tasks = [];
+
+        $http.get('/api/tasks').success(function(data){
+            taskService.tasks = data;
+        });
 
     	return {
         	changeStatus: function(task) {
@@ -25,28 +34,65 @@
                 		task.status = false;
                     }
                 });
+            },
+            getTasks: function() {
+             	return taskService.tasks;   
+            },
+            addTask: function(task, ctrl) {
+                taskService.temp = false;
+                $http.post('/api/add/task', task).success(function(resp) {
+                    if(resp.error != undefined) {
+                        alert(resp.error);
+                        return false;
+                    }
+
+                    task = resp.newTask;
+                    taskService.tasks.push(task);
+                    ctrl.newTask = {};
+                }).error(function(resp){
+                    alert('Wystąpił błąd');
+                });
             }
         };
     }]);
     
-    fTask.controller('GridController', ['$http', '$task', function($http, $task) {
+    fTask.controller('GridController', ['$task', function($task) {
         var grid = this;
-        this.tasks = [];
 
-        $http.get('/api/tasks').success(function(data){
-            grid.tasks = data;
-        });
+        this.filterHideFinished = true;
+
+        this.hideFinished = function(status) {
+            grid.filterHideFinished = status;
+        };
 
         this.statusChange = function(task) {
             $task.changeStatus(task);
         }
+
+        this.getTasks = function() {
+            return $task.getTasks();
+        };
+    }]);
+
+    fTask.controller('TaskController', ['$task', function($task) {
+        var to = this;
+        this.newTask = {};
+        
+        this.add = function() {
+            to.newTask.status = true;
+            $task.addTask(to.newTask, to);
+        };
     }]);
 })();
 </script>
 <h1>Lista zadań</h1>
 <div ng-controller="GridController as grid">
+
+    <a href="#filtr" ng-click="grid.hideFinished(true)" ng-hide="grid.filterHideFinished"><span class="glyphicon glyphicon-check" style="cursor: pointer;"></span> Pokaż zakończone</a>
+    <a href="#filtr" ng-click="grid.hideFinished(false)" ng-show="grid.filterHideFinished"><span class="glyphicon glyphicon-unchecked" style="cursor: pointer;"></span> Pokaż zakończone</a>
+
     <div class="tasks">
-        <div ng-repeat="task in grid.tasks">
+        <div ng-repeat="task in grid.getTasks()" ng-hide="!task.status && grid.filterHideFinished">
             <div class="task label" ng-class="'label-' + task.priority">
 				<!--<form action="{ path('SymfonyFirstApp_delete', {id: task.id}) }}" method="post" class="formOneButton">-->
         			<!--<button type="submit" class="btn btn-xs btn-link">Usuń</button>-->
@@ -64,4 +110,35 @@
         </div>
     </div>
 </div>
+
+
+<form name="createTask" ng-controller="TaskController as taskCtrl" ng-submit="taskCtrl.add()">
+    <div class="tasks">
+        <div class="task label" ng-class="'label-' + taskCtrl.newTask.priority" ng-show="taskCtrl.newTask.priority">
+			    <span class="glyphicon glyphicon-unchecked"></span>
+        
+                <div ng-show="taskCtrl.newTask.category" class="category label label-default">
+                    [[ taskCtrl.newTask.category ]]
+    			</div>
+            
+                [[ taskCtrl.newTask.title ]]
+        </div>
+        
+        <input type="text" ng-model="taskCtrl.newTask.title" required>
+        <select ng-model="taskCtrl.newTask.priority" required>
+            <option value="info" selected="selected">Niski</option>
+            <option value="warning">Normalny</option>
+            <option value="danger">Wysoki</option>
+        </select>
+        
+        <select ng-model="taskCtrl.newTask.category">
+            <option></option>
+            <option>Trzecia kategoria</option>
+            <option>Druga kategoria</option>
+            <option>Niebieska kategoria</option>
+        </select>
+        
+        <button class="btn btn-primary">Dodaj</button>
+    </div>
+</form>
 {% endblock %}

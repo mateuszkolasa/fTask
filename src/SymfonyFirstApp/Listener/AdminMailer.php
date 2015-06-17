@@ -21,8 +21,8 @@ class AdminMailer {
 		$this->notificationSender = $this->container->get('user_notifications');
 		$entity = $args->getEntity();
 		
-		if ($entity instanceof Task) {
+		/*if ($entity instanceof Task) {
 			$this->notificationSender->send(new TaskNotification($entity), $this->container->getParameter('admin_mail'));
-		}
+		}*/
 	}
 }
