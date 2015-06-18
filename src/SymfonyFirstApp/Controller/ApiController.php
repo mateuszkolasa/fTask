@@ -22,13 +22,14 @@ class ApiController extends Controller {
     public function apiTasksAction() {
         return new JsonResponse($this->getTasksList());
     }
-       
 
     /**
      * @Route("/api/add/task", name="SymfonyFirstApp_api_add_task")
      * Method({"POST"})
      */
     public function apiAddTaskAction(Request $request) {
+        $params = json_decode(file_get_contents('php://input'), true);
+        
         if($params['title'] == null) {
             return new JsonResponse(array('error' => 'Title cannot be null'));
         }
@@ -63,6 +64,24 @@ class ApiController extends Controller {
      */
     public function apiCategoriesAction() {
         return new JsonResponse($this->getCategoriesList());
+    }
+    
+    /**
+     * @Route("/api/add/category", name="SymfonyFirstApp_api_add_category")
+     */
+    public function apiAddCategoryAction() {
+        $params = json_decode(file_get_contents('php://input'), true);
+        
+        $category = new Category();
+        $category->setUser($this->getUser());
+        
+        $this->get('session_message')->setSuccess('Utworzono nową kategorię');
+         
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($category);
+        $em->flush();
+    
+        return $this->redirect($this->generateUrl('SymfonyFirstApp_categories'));
     }
     
     private function getTasksList($type = null) {
