@@ -14,15 +14,7 @@ class CategoriesController extends Controller {
      * @Route("/categories", name="SymfonyFirstApp_categories")
      */
     public function indexAction() {
-    	$form = $this->createForm(new CategoryType(), new Category());
-    	
-    	return $this->render(
-    			'SymfonyFirstApp:Categories:categories.html.twig',
-    			array(
-    				'categories' => $this->getCategories(),
-    				'form' => $form->createView()
-    			)
-    		);
+    	return $this->render('SymfonyFirstApp:Categories:grid.html.twig');
     }
     
 

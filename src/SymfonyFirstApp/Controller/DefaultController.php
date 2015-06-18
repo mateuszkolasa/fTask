@@ -22,60 +22,6 @@ class DefaultController extends Controller {
     }
     
     /**
-     * @Route("/tasks", name="SymfonyFirstApp_tasks")
-     */
-    public function tasksAction() {
-    	return $this->render('SymfonyFirstApp:Welcome:homepage.html.twig', array(
-    	    'tasks' => $this->getTasksList('nojs')
-    	));
-    }
-    
-
-    /**
-     * @Route("/api/tasks", name="SymfonyFirstApp_api_tasks")
-     */
-    public function apiTasksAction() {
-        return new JsonResponse($this->getTasksList());
-    }
-    
-
-    /**
-     * @Route("/api/add/task", name="SymfonyFirstApp_api_add_task")
-     * Method({"POST"})
-     */
-    public function apiAddTaskAction(Request $request) {
-        $params = json_decode(file_get_contents('php://input'), true);
-        
-        if($params['title'] == null) {
-            return new JsonResponse(array('error' => 'Title cannot be null'));
-        }
-        
-        $task = new Task();
-        $task->setTitle($params['title']);
-        $task->setStatus($params['status']);
-        
-        if(array_key_exists('category', $params) && $params['category'] != null) {
-            $params['category'] = $this->getDoctrine()->getManager()->getRepository('SymfonyFirstApp:Category')->findOneBy(array('name' => $params['category']));
-            if($params['category'] != null) {
-                $task->setCategory($params['category']);
-            }
-        }
-        
-        if($params['priority'] == 'info') $params['priority'] = 1;  
-        if($params['priority'] == 'warning') $params['priority'] = 2;  
-        if($params['priority'] == 'danger') $params['priority'] = 3;
-        $task->setPriority($params['priority']);
-        $task->setDate(new \DateTime());
-        
-        $task->setUser($this->getUser());
-        
-        $this->getDoctrine()->getManager()->persist($task);
-        $this->getDoctrine()->getManager()->flush();
-        
-        return new JsonResponse(array('newTask' => $task->toArray()));
-    }
-    
-    /**
      * @Route("/list/{type}", name="SymfonyFirstApp_list")
      */
     public function listAction($type) {

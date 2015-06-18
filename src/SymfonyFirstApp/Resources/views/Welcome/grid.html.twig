@@ -5,7 +5,6 @@
 
 {% block content %}
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
 (function(){
     var fTask = angular.module('fTask', []).config(['$interpolateProvider', function ($interpolateProvider) {
@@ -74,20 +73,44 @@
         };
     }]);
 
-    fTask.controller('TaskController', ['$task', function($task) {
+    fTask.controller('TaskController', ['$scope', '$task', function($scope, $task) {
         var to = this;
         this.newTask = {};
         
         this.add = function() {
             to.newTask.status = true;
+            to.newTask.category = $scope.category['name'];
             $task.addTask(to.newTask, to);
+        };
+    }]);
+
+
+    fTask.directive('sel', ['$http', function($http) {
+        var sel = this;
+        this.categories = [];
+
+        $http.get('/api/categories').success(function(data){
+            for(var x = 0; x < data.length; x++) {
+                sel.categories.push({name: data[x].name, value: data[x].name});
+            }
+        });
+       
+        return {
+          	template: '<select ng-model="selectedValue" ng-options="c.name for c in categories"></select>',
+          	restrict: 'E',
+          	scope: {
+             	selectedValue: '='
+          	},
+          	link: function(scope, elem, attrs) {
+	          	scope.categories = sel.categories;
+    			scope.selectedValue=scope.categories[1];
+          	}
         };
     }]);
 })();
 </script>
 <h1>Lista zadań</h1>
 <div ng-controller="GridController as grid">
-
     <a href="#filtr" ng-click="grid.hideFinished(true)" ng-hide="grid.filterHideFinished"><span class="glyphicon glyphicon-check" style="cursor: pointer;"></span> Pokaż zakończone</a>
     <a href="#filtr" ng-click="grid.hideFinished(false)" ng-show="grid.filterHideFinished"><span class="glyphicon glyphicon-unchecked" style="cursor: pointer;"></span> Pokaż zakończone</a>
 
@@ -98,12 +121,12 @@
         			<!--<button type="submit" class="btn btn-xs btn-link">Usuń</button>-->
 				<!--</form>-->
                 
-                    <span class="glyphicon glyphicon-check" ng-hide="task.status" ng-click="grid.statusChange(task)" style="cursor: pointer;"></span>
-                    <span class="glyphicon glyphicon-unchecked" ng-show="task.status" ng-click="grid.statusChange(task)" style="cursor: pointer;"></span>
-                    
-					<div ng-show="task.category" class="category label label-primary" ng-class="'label-' + task.category.className">
-                        [[ task.category.name ]]
-					</div>
+                <span class="glyphicon glyphicon-check" ng-hide="task.status" ng-click="grid.statusChange(task)" style="cursor: pointer;"></span>
+                <span class="glyphicon glyphicon-unchecked" ng-show="task.status" ng-click="grid.statusChange(task)" style="cursor: pointer;"></span>
+                
+				<div ng-show="task.category" class="category label label-primary" ng-class="'label-' + task.category.className">
+                    [[ task.category.name ]]
+				</div>
                 
                 [[ task.title ]]
             </div>
@@ -111,17 +134,16 @@
     </div>
 </div>
 
-
 <form name="createTask" ng-controller="TaskController as taskCtrl" ng-submit="taskCtrl.add()">
     <div class="tasks">
         <div class="task label" ng-class="'label-' + taskCtrl.newTask.priority" ng-show="taskCtrl.newTask.priority">
-			    <span class="glyphicon glyphicon-unchecked"></span>
+		    <span class="glyphicon glyphicon-unchecked"></span>
+    
+            <div ng-show="category" class="category label label-default">
+                [[ category['name'] ]]
+			</div>
         
-                <div ng-show="taskCtrl.newTask.category" class="category label label-default">
-                    [[ taskCtrl.newTask.category ]]
-    			</div>
-            
-                [[ taskCtrl.newTask.title ]]
+            [[ taskCtrl.newTask.title ]]
         </div>
         
         <input type="text" ng-model="taskCtrl.newTask.title" required>
@@ -131,12 +153,8 @@
             <option value="danger">Wysoki</option>
         </select>
         
-        <select ng-model="taskCtrl.newTask.category">
-            <option></option>
-            <option>Trzecia kategoria</option>
-            <option>Druga kategoria</option>
-            <option>Niebieska kategoria</option>
-        </select>
+        <sel selected-value="category">
+        </sel>
         
         <button class="btn btn-primary">Dodaj</button>
     </div>

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="categories")
+ * @ORM\Entity(repositoryClass="SymfonyFirstApp\Entity\CategoryRepository")
  */
 class Category {
 	/**
@@ -69,11 +70,22 @@ class Category {
 		$this->user = $newUser;
 	}
 	
+	public function getClass() {
+		if($this->color == 2) return 'primary';
+		if($this->color == 3) return 'success';
+		if($this->color == 4) return 'info';
+		if($this->color == 5) return 'warning';
+		if($this->color == 6) return 'danger';
+		
+		return 'default';
+	}
+	
 	public function toArray() {
 	    return array(
 	        'id' => $this->id,
 	        'name' => $this->name,
-	        'color' => $this->color
+	        'color' => $this->color,
+	        'class' => $this->getClass()
 	    );
 	}
 }

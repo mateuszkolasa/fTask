@@ -1,0 +1,106 @@
+{# app/Resources/views/layout.html.twig #}
+{% extends "SymfonyFirstApp::layout.html.twig" %}
+
+{% block title %}fTask{% endblock %}
+
+{% block content %}
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+<script type="text/javascript">
+(function(){
+    var fTask = angular.module('fTask', []).config(['$interpolateProvider', function ($interpolateProvider) {
+        $interpolateProvider.startSymbol('[[');
+        $interpolateProvider.endSymbol(']]');
+    }]);
+
+    fTask.factory('$category', ['$http', function($http) {
+		var categoryService = this;  
+		this.temp;  
+		this.categories = [];
+
+        $http.get('/api/categories').success(function(data){
+            categoryService.categories = data;
+        });
+
+    	return {
+        	getCategories: function() {
+             	return categoryService.categories;   
+            }/*,
+            addTask: function(category, ctrl) {
+                categoryService.temp = false;
+                $http.post('/api/add/category', category).success(function(resp) {
+                    if(resp.error != undefined) {
+                        alert(resp.error);
+                        return false;
+                    }
+
+                    category = resp.newCategory;
+                    categoryService.categories.push(category);
+                    ctrl.newCategory = {};
+                }).error(function(resp){
+                    alert('Wystąpił błąd');
+                });
+            }*/
+        };
+    }]);
+    
+    fTask.controller('GridController', ['$category', function($category) {
+        var grid = this;
+
+        this.filterHideFinished = true;
+
+        this.hideFinished = function(status) {
+            grid.filterHideFinished = status;
+        };
+
+        this.statusChange = function(category) {
+            $category.changeStatus(category);
+        }
+
+        this.getCategories = function() {
+            return $category.getCategories();
+        };
+    }]);
+
+    fTask.controller('CategoryController', ['$category', function($category) {
+        var to = this;
+        this.newCategory = {};
+        
+        this.add = function() {
+            to.newCategory.status = true;
+            $category.addTask(to.newCategory, to);
+        };
+    }]);
+})();
+</script>
+<h1>Kategorie</h1>
+<div ng-controller="GridController as grid">
+    <div class="categories">
+        <div ng-repeat="category in grid.getCategories()">
+            <div class="category label" ng-class="'label-' + category.class">
+                [[ category.name ]]
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<form name="createTask" ng-controller="CategoryController as categoryCtrl" ng-submit="categoryCtrl.add()">
+    <div class="categories">
+        <div class="category label" ng-class="'label-' + categoryCtrl.newCategory.class" ng-show="categoryCtrl.newCategory.class">
+            [[ categoryCtrl.newCategory.title ]]
+        </div>
+        
+        <input type="text" ng-model="categoryCtrl.newCategory.title" required>
+        <select ng-model="categoryCtrl.newCategory.class" required>
+            <option value="default" selected="selected">Domyślny</option>
+            <option value="primary">Niebieski</option>
+            <option value="success">Zielony</option>
+            <option value="info">Błękitny</option>
+            <option value="warning">Zółty</option>
+            <option value="danger">Czerwony</option>
+        </select>
+        
+        <button class="btn btn-primary">Dodaj</button>
+    </div>
+</form>
+{% endblock %}

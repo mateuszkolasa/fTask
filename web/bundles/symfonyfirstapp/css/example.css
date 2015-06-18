@@ -7,7 +7,7 @@ div.tasks {
 	font-size: 13pt;
 }
 
-div.tasks .task {
+div.tasks .task, div.categories .category {
 	width: 100%;
 	text-align: left;
 	display: block;
